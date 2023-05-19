@@ -1,21 +1,29 @@
 package net.javaguides.employeeservice;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 public class EmployeeServiceApplication {
 
 	/*
-		Injecting RestTemplate to send HTTP synchronous request to other microservices
+		Injecting WebClient to send HTTP synchronous/asynchronous
+		request to other microservices
 	 */
 	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
+	public WebClient restTemplate() {
+
+		/*
+			Creating WebClient using builder pattern. No use of Constructor
+		 */
+		return WebClient.builder().build();
 	}
 	public static void main(String[] args) {
+
 		SpringApplication.run(EmployeeServiceApplication.class, args);
 	}
 

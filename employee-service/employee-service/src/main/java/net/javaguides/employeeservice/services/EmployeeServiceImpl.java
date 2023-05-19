@@ -11,6 +11,7 @@ import net.javaguides.employeeservice.repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements  EmployeeService{
 
     private EmployeeRepository employeeRepository;
-    private RestTemplate restTemplate;
+    private WebClient webClient;
     @Override
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
 
@@ -70,12 +71,38 @@ public class EmployeeServiceImpl implements  EmployeeService{
     }
     public EmployeeResponseDto getEmployeeResponseDto(EmployeeDto employeeDto) {
 
-        ResponseEntity<DepartmentDto> deptRespEntity = restTemplate.getForEntity(
-                    "http://localhost:8080/api/departments/byDepartmentCode/"
-                            + employeeDto.getDepartmentCode(), DepartmentDto.class);
+        DepartmentDto departmentDto = webClient
+
+                //We want HTTP GET request method
+                .get()
+
+                //This is the URL resource where we want to send request
+                .uri("http://localhost:8080/api/departments/byDepartmentCode/"
+                        + employeeDto.getDepartmentCode())
+
+                /*
+                    Telling that retrieve the data but did specify how. It need
+                    following feedback.
+                     1. single response or multiple responses one by one.
+                     2. synchronous or asynchronous response/responses
+                     3. but just retrieve
+                 */
+                .retrieve()
+
+                /*
+                   It tells that we want to single response or single element.
+                   But it does not specify if synchronously or asychronously.
+                */
+                .bodyToMono(DepartmentDto.class)
+
+                /*
+                    This request should synchronous hence we call block() method
+                    in call chain
+                 */
+                .block();
 
         EmployeeResponseDto employeeResponseDto = EmployeeResponseDto.builder()
-                .departmentDto(deptRespEntity.getBody())
+                .departmentDto(departmentDto)
                 .employeeDto(employeeDto)
                 .build();
 

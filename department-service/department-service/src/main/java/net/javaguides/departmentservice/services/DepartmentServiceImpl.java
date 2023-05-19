@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class DepartmentServiceImpl implements  DepartmentService{
+public class DepartmentServiceImpl implements DepartmentService{
 
     private DepartmentRepository departmentRepository;
     private ModelMapper modelMapper;
