@@ -15,7 +15,7 @@ public class EmployeeServiceApplication {
 		request to other microservices
 	 */
 	@Bean
-	public WebClient restTemplate() {
+	public WebClient webClient() {
 
 		/*
 			Creating WebClient using builder pattern. No use of Constructor
