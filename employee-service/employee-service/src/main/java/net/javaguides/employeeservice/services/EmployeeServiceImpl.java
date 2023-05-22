@@ -19,7 +19,7 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements  EmployeeService{
 
     private EmployeeRepository employeeRepository;
-    private RestTemplate restTemplate;
+    private DepartmentFeignService departmentFeignService;
     @Override
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
 
@@ -70,12 +70,10 @@ public class EmployeeServiceImpl implements  EmployeeService{
     }
     public EmployeeResponseDto getEmployeeResponseDto(EmployeeDto employeeDto) {
 
-        ResponseEntity<DepartmentDto> deptRespEntity = restTemplate.getForEntity(
-                    "http://localhost:8080/api/departments/byDepartmentCode/"
-                            + employeeDto.getDepartmentCode(), DepartmentDto.class);
+        DepartmentDto departmentDto = departmentFeignService.getDepartmentByDepartmentCode(employeeDto.getDepartmentCode());
 
         EmployeeResponseDto employeeResponseDto = EmployeeResponseDto.builder()
-                .departmentDto(deptRespEntity.getBody())
+                .departmentDto(departmentDto)
                 .employeeDto(employeeDto)
                 .build();
 
