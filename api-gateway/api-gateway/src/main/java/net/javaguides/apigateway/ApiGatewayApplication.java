@@ -1,18 +1,20 @@
-package net.javaguides.employeeservice;
+package net.javaguides.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
-
+/*
+  @EnableDiscoveryClient or @EnableEurekaClient allows to our
+  microservice app to register itself with Client Discovery and
+  Registery Server.
+ */
 @EnableDiscoveryClient
-@EnableFeignClients
 @SpringBootApplication
-public class EmployeeServiceApplication {
+public class ApiGatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmployeeServiceApplication.class, args);
+		SpringApplication.run(ApiGatewayApplication.class, args);
 	}
 
 }
